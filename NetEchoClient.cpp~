@@ -59,7 +59,7 @@ int main(int argc,char**argv){
 
 			double t=end.tv_sec-begin.tv_sec
 				+(end.tv_nsec-begin.tv_nsec >0? (end.tv_nsec-begin.tv_nsec)*NANO
-						: (1/NANO+end.tv_nsec-begin.tv_nsec)*NANO-1
+						: (1+end.tv_nsec-begin.tv_nsec)*NANO-1
 				 );		
 			if (n==0){
 				ave_per_sec=request_num/t;
