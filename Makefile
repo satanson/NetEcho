@@ -18,7 +18,7 @@
 #
 
 BOOST_DIR = /usr/include/boost
-THRIFT_DIR = /usr/local/include/thrift
+THRIFT_DIR = /usr/local/include
 LIB_DIR = /usr/local/lib
 
 GEN_SRC =./echo_constants.cpp ./echo_types.cpp ./NetEcho.cpp 
