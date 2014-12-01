@@ -2,14 +2,14 @@
 // You should copy it to another filename to avoid overwriting it.
 
 #include "NetEcho.h"
-#include <thrift/protocol/TBinaryProtocol.h>
-#include <thrift/server/TSimpleServer.h>
-#include <thrift/transport/TServerSocket.h>
-#include <thrift/transport/TBufferTransports.h>
-#include <thrift/concurrency/Thread.h>
-#include <thrift/concurrency/PosixThreadFactory.h>
-#include <thrift/concurrency/ThreadManager.h>
-#include <thrift/server/TNonblockingServer.h>
+#include <protocol/TBinaryProtocol.h>
+#include <server/TSimpleServer.h>
+#include <server/TNonblockingServer.h>
+#include <concurrency/Thread.h>
+#include <concurrency/ThreadManager.h>
+#include <concurrency/PosixThreadFactory.h>
+#include <transport/TServerSocket.h>
+#include <transport/TBufferTransports.h>
 #include <iostream>
 
 using namespace ::apache::thrift;
@@ -22,7 +22,6 @@ using boost::shared_ptr;
 
 using namespace  ::nynn::mm;
 using namespace std;
-
 class NetEchoHandler : virtual public NetEchoIf {
  public:
   NetEchoHandler() {
@@ -31,9 +30,8 @@ class NetEchoHandler : virtual public NetEchoIf {
 
   void echo(std::string& _return, const std::string& s) {
     // Your implementation goes here
-    printf("echo:%s\n",s.c_str());
 	_return.resize(s.size());
-	for(int  i=0;i<s.size();i++) _return[i]='a'<=s[i]&& s[i]<='z'? s[i]+'A'-'a':s[i];
+	for (int i=0;i<s.size();++i)_return[i]=toupper(s[i]);
   }
 
 };
@@ -42,17 +40,21 @@ int main(int argc, char **argv) {
   int port = 9090;
   boost::shared_ptr<NetEchoHandler> handler(new NetEchoHandler());
   boost::shared_ptr<TProcessor> processor(new NetEchoProcessor(handler));
-  //boost::shared_ptr<TServerTransport> serverTransport(new TServerSocket(port));
+  //shared_ptr<TServerTransport> serverTransport(new TServerSocket(port));
   boost::shared_ptr<TTransportFactory> transportFactory(new TBufferedTransportFactory());
   boost::shared_ptr<TProtocolFactory> protocolFactory(new TBinaryProtocolFactory());
-  boost::shared_ptr<ThreadFactory> pthreadFactory(new PosixThreadFactory());
-  boost::shared_ptr<ThreadManager> threadManager=ThreadManager::newSimpleThreadManager(10,4);
-  threadManager->threadFactory(pthreadFactory);
 
+  //TSimpleServer server(processor, serverTransport, transportFactory, protocolFactory);
+
+  boost::shared_ptr<ThreadFactory> pthreadFactory(new PosixThreadFactory());
+  boost::shared_ptr<ThreadManager> threadManager=ThreadManager::newSimpleThreadManager(1,0);
+  threadManager->threadFactory(pthreadFactory);
   TNonblockingServer server(processor,transportFactory,transportFactory,protocolFactory,protocolFactory,port,threadManager);
   threadManager->start();
   server.serve();
   cout<<"can reach here!"<<endl;
+
+  server.serve();
   return 0;
 }
 
