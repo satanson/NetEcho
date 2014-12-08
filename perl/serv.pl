@@ -34,6 +34,7 @@ while(1){
 	while(<SESSION>) {
 		$bytes_in +=length($_);
 		chomp;
+		print $_,"\n";
 		
 		my $msg_out=(scalar reverse $_). "\n";
 		print SESSION $msg_out;
