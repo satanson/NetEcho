@@ -1,13 +1,13 @@
 #!/usr/bin/perl -w
 use strict;
-use Socket;
+use Socket qw(:DEFAULT);
 use IO::Handle;
 
 use constant MY_ECHO_PORT =>2007;
 use constant SOMAXCONNN =>16;
 my ($bytes_out,$bytes_in)=(0,0);
 
-my $host = shift||INADDR_ANY;
+my $host = 0;
 my $port = shift||MY_ECHO_PORT;
 my $protocol = getprotobyname('tcp');
 
