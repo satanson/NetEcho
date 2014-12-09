@@ -1,8 +1,8 @@
 #!/bin/sh
 # description: Start LVS of Director server
 VIP=192.168.255.200
-RIP1=192.168.255.115
-RIP2=192.168.255.116
+RIP1=192.168.255.114
+RIP2=192.168.255.115
 . /etc/rc.d/init.d/functions
 case "$1" in
 	start)
