@@ -1,0 +1,30 @@
+#!/bin/sh
+# description: Start LVS of Director server
+VIP=192.168.255.200
+RIP1=192.168.255.115
+RIP2=192.168.255.116
+. /etc/rc.d/init.d/functions
+case "$1" in
+	start)
+	echo " start LVS of Director Server"
+	# set the Virtual  IP Address and sysctl parameter
+	/sbin/ifconfig eth0:0 $VIP broadcast $VIP netmask 255.255.255.255 up
+	route add -host $VIP dev eth0:0
+	#Clear IPVS table
+	/sbin/ipvsadm -C
+	#set LVS
+	/sbin/ipvsadm -A -t $VIP:5000 -s rr 
+	/sbin/ipvsadm -a -t $VIP:5000 -r $RIP1:5000 -g
+	/sbin/ipvsadm -a -t $VIP:5000 -r $RIP2:5000 -g
+	/sbin/ipvsadm
+	;;
+	stop)
+	echo "close LVS Directorserver"
+	/sbin/ipvsadm -C
+	/sbin/ifconfig eth0:0 down
+	;;
+	*)
+	echo "Usage: $0 {start|stop}"
+
+	exit 1
+esac
