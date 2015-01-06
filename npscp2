@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+USER=$1
+PASSWD=$2
+DIR=$3
+for host in {51..57};do
+    host="192.168.11.$host"
+    expect -c "
+	spawn scp -r $DIR $USER@$host:$DIR
+	expect {
+		\"*yes/no\" { send \"yes\r\";exp_continue }
+		\"*password:\" { send \"$PASSWD\r\" }
+	}
+	interact
+    "
+done

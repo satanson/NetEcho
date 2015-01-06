@@ -1,0 +1,15 @@
+#!/usr/bin/env bash
+USER=$1
+PASSWD=$2
+CMD=$3
+for host in {51..58};do
+    host="192.168.11.$host"
+    expect -c "
+	spawn ssh $USER@$host \"cd $PWD;$CMD\";
+	expect {
+		\"*yes/no\" { send \"yes\r\";exp_continue }
+		\"*password:\" { send \"$PASSWD\r\" }
+	}
+	interact
+    "
+done
