@@ -1,0 +1,7 @@
+#!/usr/bin/env bash
+CMD=$1;shift
+for host in $*;do
+        echo ==== ssh root@$host ". /etc/profile;cd $PWD;$CMD" ====
+        ssh $USER@$host ". /etc/profile;cd $PWD;$CMD";
+        echo ========
+done
