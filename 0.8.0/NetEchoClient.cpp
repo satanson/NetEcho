@@ -53,7 +53,7 @@ int main(int argc,char**argv){
 			clock_gettime(CLOCK_MONOTONIC,&begin);
 			for (int i=0;i<request_num;++i){
 				client.echo(us,s);
-				cout<<us<<endl;
+				//cout<<us<<endl;
 			}
 			clock_gettime(CLOCK_MONOTONIC,&end);
 
