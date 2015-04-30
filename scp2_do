@@ -25,9 +25,9 @@ file=${file##$dir/}
 dir=`abspath $dir`
 #base=${file%%.*}
 #ext=${file##*.}
-
+user=`whoami`
 for host in $*;do
-	echo ==== scp $rflag $dir/$file $USER@$host:$dir/ ====
-	scp $rflag $dir/$file $USER@$host:$dir/
+	echo ==== scp $rflag $dir/$file $user@$host:$dir/ ====
+	scp $rflag $dir/$file $user@$host:$dir/
 	echo ====
 done

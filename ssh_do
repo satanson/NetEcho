@@ -1,7 +1,8 @@
 #!/usr/bin/env bash
 CMD=$1;shift
+user=`whoami`
 for host in $*;do
-        echo ==== ssh $USER@$host ". /etc/profile;cd $PWD;$CMD" ====
-        ssh $USER@$host ". /etc/profile;cd $PWD;$CMD";
+        echo ==== ssh $user@$host ". /etc/profile;cd $PWD;$CMD" ====
+        ssh $user@$host ". /etc/profile;cd $PWD;$CMD";
         echo ========
 done
