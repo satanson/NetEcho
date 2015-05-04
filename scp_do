@@ -1,4 +1,5 @@
 #!/usr/bin/env bash
+
 file=$1;shift
 if [ -z $file ];then
         echo "Error: Empty file name!"
